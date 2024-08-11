@@ -1,1 +1,12 @@
-import Image from "next/image";
+import { Button } from "./_components/ui/button"
+
+
+const Home = () => {
+    return (
+
+        <Button>test</Button>
+    )
+}
+
+
+export default Home
