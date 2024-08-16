@@ -2,7 +2,6 @@ import { Button } from "./_components/ui/button"
 import Header from "./_components/ui/header"
 import { Input } from "./_components/ui/input"
 import Image from "next/image";
-import { Card, CardContent } from "./_components/ui/card";
 import { SearchIcon } from "lucide-react";
 import { db } from "./_lib/prisma";
 import BarbershopItem from "./_components/barbershop-item";
@@ -65,15 +64,6 @@ const Home = async () => {
                 {popularBarbershops.map((barbershop) => (<BarbershopItem key={barbershop.id} barbershop={barbershop} />))}
                 </div>
             </div>
-            <footer>
-            <Card className=" mt-5" >
-                <CardContent className=" px-7 py-7">
-                    <p className=" text-xs text-gray-400">
-                    © 2024 Copyright <span className=" font-bold text-xm">https://github.com/Mario-Luis</span>
-                    </p>
-                </CardContent>
-            </Card>
-            </footer>
         </div>
     )
 }
