@@ -9,19 +9,19 @@ import Link from "next/link";
 
 
 
-const SidebarShit = () => {
+const SidebarSheet = () => {
     return ( 
-        <Sheet>
+        <Sheet >
             <SheetTrigger asChild>
-                <Button size="icon" variant="outline">
+                <Button size="icon" variant="secondary" className=" absolute right-4 top-4">
                     <MenuIcon className=" text-primary"/>
                 </Button>
             </SheetTrigger>
-            <SheetContent className=" overflow-y-auto">
+            <SheetContent className=" max-w-[250px] overflow-y-auto">
                 <SheetHeader>
                     <SheetTitle className="text-left">Menu</SheetTitle>
                 </SheetHeader>
-                <div className=" gap-3 py-5 border-b border-solid flex items-center">
+                <div className=" gap-2 py-5 border-b border-solid flex items-center">
                     <Avatar>
                         <AvatarImage  src="/IMG_7561.jpg"/>
                     </Avatar>
@@ -32,10 +32,10 @@ const SidebarShit = () => {
                 </div>
                 <div className=" flex flex-col gap-1 py-3 border-b border-solid ">
                     <SheetClose asChild>
-                        <Button variant="ghost" asChild className=" justify-start gap-2">
+                        <Button asChild variant="ghost" className=" justify-start gap-2">
                             <Link href="/">
-                            <HomeIcon size={18} />
-                            Inicio
+                                <HomeIcon size={18} />
+                                Inicio
                             </Link>
                         </Button>
                     </SheetClose>
@@ -63,4 +63,4 @@ const SidebarShit = () => {
     );
 }
 
-export default SidebarShit;
+export default SidebarSheet;
