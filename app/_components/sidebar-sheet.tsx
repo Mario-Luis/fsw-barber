@@ -1,6 +1,6 @@
 "use client"
 
-import { Calendar, CalendarIcon, HomeIcon, Import, LogInIcon, LogOutIcon, MenuIcon } from "lucide-react";
+import { Calendar, CalendarIcon, HomeIcon,LogInIcon, LogOutIcon, MenuIcon } from "lucide-react";
 import { SheetTrigger,Sheet, SheetContent, SheetTitle, SheetHeader, SheetClose } from "./ui/sheet";
 import { Button } from "./ui/button";
 import quickSearchOptions from "../_constants/search";
@@ -15,9 +15,9 @@ import { signIn, signOut, useSession } from "next-auth/react";
 
 
 const SidebarSheet = () => {
-    const {data} = useSession()
-    const handleLoginWithGoogleleClick = () => signIn ("google")
-    const handleLogoutClick = () => signOut()
+const {data} = useSession()
+const handleLoginWithGoogleleClick = () => signIn ("google")
+const handleLogoutClick = () => signOut()
 
     return ( 
         <Sheet >
@@ -45,7 +45,7 @@ const SidebarSheet = () => {
                         <>
                         <Dialog>
                             <DialogTrigger asChild>
-                                <Button variant="ghost" className=" justify-start gap-1">
+                                <Button variant="ghost" className=" font-bold text-xl justify-start gap-3">
                                     <LogInIcon size={25}/>
                                     Fazer login
                                 </Button>

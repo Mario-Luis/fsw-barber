@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "./_components/ui/sonner";
 import FooterItem from "./_components/footer-item";
 import AuthProvider from "./_providers/auth";
+import Header from "./_components/ui/header";
 
 
 

@@ -1,12 +1,12 @@
 import { Button } from "./_components/ui/button"
 import Header from "./_components/ui/header"
-import { Input } from "./_components/ui/input"
 import Image from "next/image";
-import { SearchIcon } from "lucide-react";
+import Search from "./_components/search";
 import { db } from "./_lib/prisma";
 import BarbershopItem from "./_components/barbershop-item";
 import quickSearchOptions from "./_constants/search";
 import BookingItem from "./_components/booking-item";
+import BarbershopsPage from "./barbershops/page";
 
 
 
@@ -24,16 +24,10 @@ const Home = async () => {
                 {/* TEXTO */}
             <div className="p-5">
                 <h2 className="text-4xl font-bold">Olá,Mario Luis!</h2>
-                <p>Segunda-Feira 5 Agosto.</p>
+                <p className=" mb-4">Segunda-Feira 5 Agosto.</p>
                 
                 {/* BUSCA */}
-                <div className="mt-6 flex gap-2 items-center">
-                    <Input placeholder=" Buscar....." />
-                    <Button>
-                        <SearchIcon />
-                    </Button>
-                </div>
-
+                <Search/>
                 {/* BUSCA RAPIDA */}
                 <div className=" flex gap-3 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
                 {quickSearchOptions.map((option) => (
