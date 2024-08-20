@@ -5,23 +5,47 @@ import { Button } from "./ui/button";
 import { SearchIcon } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
+import { useForm } from "react-hook-form";
+
+const formSchema = z.object({
+    Search: z.string(). trim().min(1,{
+        message:"Opçāo invalida,animal incompetente!",
+    }),
+})
+
 
 const Search = () => {
-    const [search, setSearch] = useState("")
-    const router = useRouter()
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+        Search: "",
+        },
+    })
+const router = useRouter()
+const handleSubmit = (data: z.infer<typeof formSchema>) => {
+    router.push(`/barbershops?search=${data.Search}`)
+}
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        router.push(`/barbershops?search=${search}`)
-    }
-
-    return ( 
-        <form onSubmit={handleSubmit} className=" flex gap-2 items-center">
-            <Input placeholder=" Buscar....." value={search} onChange={(e) => setSearch(e.target.value)} />
-            <Button type="submit">
-                <SearchIcon />
-            </Button>
-        </form>
+    return (
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(handleSubmit)} className=" mt-6 flex gap-2">
+                <FormField control={form.control} name="Search" render={({ field }) => (
+                    <FormItem className=" w-full ">
+                        <FormControl>
+                            <Input placeholder="Buscar...." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
+                />
+                <Button type="submit">
+                    <SearchIcon/>
+                </Button>
+            </form>
+        </Form>
     )
 }
 

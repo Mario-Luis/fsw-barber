@@ -7,6 +7,7 @@ import BarbershopItem from "./_components/barbershop-item";
 import quickSearchOptions from "./_constants/search";
 import BookingItem from "./_components/booking-item";
 import BarbershopsPage from "./barbershops/page";
+import Link from "next/link";
 
 
 
@@ -22,18 +23,20 @@ const Home = async () => {
         <div>
             <Header />
                 {/* TEXTO */}
-            <div className="p-5">
-                <h2 className="text-4xl font-bold">Olá,Mario Luis!</h2>
+            <div className="p-5" >
+                <h2 className=" text-4xl font-bold">Olá,Mario Luis!</h2>
                 <p className=" mb-4">Segunda-Feira 5 Agosto.</p>
                 
                 {/* BUSCA */}
-                <Search/>
+                <div className=" p-0"><Search/></div>
                 {/* BUSCA RAPIDA */}
                 <div className=" flex gap-3 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
                 {quickSearchOptions.map((option) => (
-                    <Button variant="secondary" className=" flex gap-1 mt-5" key={option.title} >
-                    <Image src={option.imageUrl} width={16} height={16} alt={option.title}/>
-                    {option.title}
+                    <Button asChild variant="secondary" className=" flex gap-1 mt-5" key={option.title} >
+                        <Link href={`/barbershops?service=${option.title}`}>
+                            <Image src={option.imageUrl} width={16} height={16} alt={option.title}/>
+                            {option.title}
+                        </Link>
                     </Button>
                 ))}
                 </div>

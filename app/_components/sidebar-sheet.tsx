@@ -1,6 +1,6 @@
 "use client"
 
-import { Calendar, CalendarIcon, HomeIcon,LogInIcon, LogOutIcon, MenuIcon } from "lucide-react";
+import { CalendarIcon, HomeIcon,LogInIcon, LogOutIcon, MenuIcon } from "lucide-react";
 import { SheetTrigger,Sheet, SheetContent, SheetTitle, SheetHeader, SheetClose } from "./ui/sheet";
 import { Button } from "./ui/button";
 import quickSearchOptions from "../_constants/search";
@@ -82,10 +82,14 @@ const handleLogoutClick = () => signOut()
                 </div>
                 <div className=" flex flex-col gap-1 py-3 border-b border-solid ">
                     {quickSearchOptions.map((option) =>(
-                        <Button key={option.title} variant="ghost" className=" justify-start gap-1">
-                            <Image alt={option.title} src={option.imageUrl} height={18} width={18}/>
-                            {option.title}
-                        </Button>
+                        <SheetClose key={option.title} asChild>
+                            <Button asChild variant="ghost" className=" justify-start gap-1">
+                                <Link href={`/barbershops?service=${option.title}`}>
+                                    <Image alt={option.title} src={option.imageUrl} height={18} width={18}/>
+                                    {option.title}
+                                </Link>
+                            </Button>
+                        </SheetClose>
                     ))}
                 </div>
                 <div className=" flex flex-col gap-1 py-3 border-b border-solid ">
