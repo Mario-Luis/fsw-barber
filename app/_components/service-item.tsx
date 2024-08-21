@@ -1,15 +1,85 @@
-import { BarbershopService } from "@prisma/client";
+"use client"
+
+import { BarbershopService ,Barbershop } from "@prisma/client";
 import { CardContent , Card } from "./ui/card";
 import Image from "next/image";
 import { Button } from "./ui/button";
-import SidebarSheet from "@/app/_components/sidebar-sheet"
+import { SheetTrigger,Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter, SheetClose } from "./ui/sheet";
+import { Calendar } from "./ui/calendar";
+import { ptBR } from "date-fns/locale";
+import { useState } from "react";
+import { format, set, setHours, setMinutes } from "date-fns";
+import { Pick } from "@prisma/client/runtime/library";
+import { createBooking } from "../_actions/create-booking";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
 
 
 interface ServiceItemProps {
     service: BarbershopService
+    barbershop: Pick<Barbershop,"name">
 }
 
-const ServiceItem = ({service}: ServiceItemProps) => {
+const TIME_LIST = [
+    "08:00",
+    "08:30",
+    "09:00",
+    "09:30",
+    "10:00",
+    "10:30",
+    "11:00",
+    "11:30",
+    "12:00",
+    "12:30",
+    "13:00",
+    "13:30",
+    "14:00",
+    "14:30",
+    "15:00",
+    "15:30",
+    "16:00",
+    "16:30",
+    "17:00",
+    "17:30",
+    "18:00",
+]
+
+const ServiceItem = ({service,barbershop}: ServiceItemProps) => {
+    const {data} = useSession()
+    const [selectedDay,setSelectedDay] = useState<Date | undefined>(undefined)
+    const [selectedTime, setSelectedTime] = useState<string | undefined>(undefined)
+    
+    
+    const handleDateSelect = (date: Date | undefined) => {
+        setSelectedDay(date)
+    }
+
+    const handleTimeSelect =(time: string) => {
+        setSelectedTime(time)
+    }
+
+    const handleCreateBooking = async () => {
+        try {
+            if (!selectedDay || !selectedTime) return;
+            const hour = Number(selectedTime.split(":")[0])
+            const minute = Number(selectedTime.split(":")[1])
+            const newDate = set(selectedDay,{
+                minutes: minute,
+                hours: hour,
+            })
+            await createBooking({
+                serviceId: service.id,
+                userId: (data?.user as any).id,
+                date: newDate,
+            })
+            toast.success("Reserva criada com sucesso!")
+        } catch (error) {
+            console.error(error)
+            toast.error("Erro ao criar reserva!")
+        }
+    }
+
+    
     return (
         <Card className="  rounded-xl">
             <CardContent className=" flex items-center gap-3 p-3 ">
@@ -26,7 +96,92 @@ const ServiceItem = ({service}: ServiceItemProps) => {
                         <p className=" text-sm font-bold text-primary">
                             {Intl.NumberFormat("pt-BR",{ style: "currency",currency: "BRL",}).format(Number(service.price))}
                         </p>
-                        <Button variant="secondary" size="sm" className=" uppercase text-primary rounded-xl">reservar</Button>
+                        <Sheet>
+                            <SheetTrigger asChild>
+                                <Button variant="secondary" size="sm" className=" uppercase text-primary rounded-xl">
+                                reservar
+                                </Button>
+                            </SheetTrigger>
+                            <SheetContent className="px-0 overflow-y-auto [&::-webkit-scrollbar]:hidden">
+                                <SheetHeader>
+                                    <SheetTitle >Reservar</SheetTitle>
+                                </SheetHeader>
+                                <div className=" border-b border-solid py-5">
+                                    <Calendar mode="single" locale={ptBR}
+                                    selected={selectedDay}
+                                    onSelect={handleDateSelect}
+                                    styles={{
+                                        head_cell: {
+                                        width: "100%",
+                                        textTransform: "capitalize",
+                                        },
+                                        cell: {
+                                        width: "100%",
+                                        },
+                                        button: {
+                                        width: "100%",
+                                        },
+                                        nav_button_previous: {
+                                        width: "32px",
+                                        height: "32px",
+                                        },
+                                        nav_button_next: {
+                                        width: "32px",
+                                        height: "32px",
+                                        },
+                                        caption: {
+                                        textTransform: "capitalize",
+                                        },
+                                    }}/>
+                                </div>
+                                {selectedDay && (
+                                    <div className=" border-b border-solid p-5 gap-3 [&::-webkit-scrollbar]:hidden flex overflow-x-auto px-5">
+                                        {TIME_LIST.map((time) => (
+                                            <Button className=" rounded-full" key={time} variant={selectedTime === time ? "default" : "outline"}onClick={() => handleTimeSelect(time)}>
+                                                {time}
+                                            </Button>
+                                        ))}
+                                    </div>
+                                )}
+                                {selectedTime && selectedDay && (
+                                    <div className="p-5">
+                                        <Card >
+                                            <CardContent className="p-3 space-y-3">
+                                                <div className=" flex justify-between items-center">
+                                                    <h2 className=" font-bold">{service.name}</h2>
+                                                    <p className=" text-sm font-bold">
+                                                        {Intl.NumberFormat("pt-BR",{ style: "currency",currency: "BRL",}).format(Number(service.price))}
+                                                    </p>
+                                                </div>
+                                                <div className=" flex justify-between items-center">
+                                                    <h2 className=" text-sm">Data</h2>
+                                                    <p className=" text-sm">
+                                                        {format(selectedDay,"d 'de' MMM",{locale: ptBR})}
+                                                    </p>
+                                                </div>
+                                                <div className=" flex justify-between items-center">
+                                                    <h2 className=" text-sm">Horário</h2>
+                                                    <p className=" text-sm">
+                                                        {selectedTime}
+                                                    </p>
+                                                </div>
+                                                <div className=" flex justify-between items-center">
+                                                    <h2 className=" text-sm">Barbearia</h2>
+                                                    <p className=" text-sm">
+                                                        {barbershop.name}
+                                                    </p>
+                                                </div>
+                                                <SheetFooter className="pz-5">
+                                                    <SheetClose asChild>
+                                                        <Button onClick={handleCreateBooking}>Confirmar</Button>
+                                                    </SheetClose>
+                                                </SheetFooter>
+                                            </CardContent>
+                                        </Card>
+                                    </div>
+                                )}
+                            </SheetContent>
+                        </Sheet>
                         </div>
                     </div>
             </CardContent>
