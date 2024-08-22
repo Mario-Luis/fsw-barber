@@ -10,13 +10,13 @@ import Link from "next/link";
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { DialogHeader } from "./ui/dialog";
 import { signIn, signOut, useSession } from "next-auth/react";
+import SignInDialog from "./sign-in-dialog";
 
 
 
 
 const SidebarSheet = () => {
 const {data} = useSession()
-const handleLoginWithGoogleleClick = () => signIn ("google")
 const handleLogoutClick = () => signOut()
 
     return ( 
@@ -50,18 +50,7 @@ const handleLogoutClick = () => signOut()
                                     Fazer login
                                 </Button>
                             </DialogTrigger>
-                            <DialogContent className=" max-w-[270px]">
-                                    <DialogHeader>
-                                        <DialogTitle>Fazer login</DialogTitle>
-                                            <DialogDescription>
-                                            Logar com Google
-                                        </DialogDescription>
-                                    </DialogHeader>
-                            <Button variant="outline" className=" gap-1" onClick={handleLoginWithGoogleleClick} >
-                                <Image alt="Logar com Google" src="/icons8-google-94.png" height={18} width={18}/>
-                                Google
-                            </Button>
-                            </DialogContent>
+                            <SignInDialog/>
                         </Dialog>
                         </>
                     )}

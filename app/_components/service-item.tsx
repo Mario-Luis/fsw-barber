@@ -8,7 +8,7 @@ import { SheetTrigger,Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter,
 import { Calendar } from "./ui/calendar";
 import { ptBR } from "date-fns/locale";
 import { useEffect, useState } from "react";
-import { format, set, setHours, setMinutes } from "date-fns";
+import { addDays, format, set, setHours, setMinutes } from "date-fns";
 import { Pick } from "@prisma/client/runtime/library";
 import { createBooking } from "../_actions/create-booking";
 import { useSession } from "next-auth/react";
@@ -147,6 +147,7 @@ const ServiceItem = ({service,barbershop}: ServiceItemProps) => {
                                 </SheetHeader>
                                 <div className=" border-b border-solid py-5">
                                     <Calendar mode="single" locale={ptBR}
+                                    fromDate={addDays(new Date(),0)}
                                     selected={selectedDay}
                                     onSelect={handleDateSelect}
                                     styles={{
