@@ -64,10 +64,12 @@ const handleLogoutClick = () => signOut()
                             </Link>
                         </Button>
                     </SheetClose>
-                    <Button variant="ghost" className=" justify-start gap-1">
-                        <CalendarIcon size={18}  />
-                        Agendamentos
-                    </Button>
+                    <Link href="/bookings">
+                        <Button variant="ghost" className=" justify-start gap-1">
+                            <CalendarIcon size={18}  />
+                            Agendamentos
+                        </Button>
+                    </Link>
                 </div>
                 <div className=" flex flex-col gap-1 py-3 border-b border-solid ">
                     {quickSearchOptions.map((option) =>(
