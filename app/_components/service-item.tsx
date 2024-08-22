@@ -15,6 +15,8 @@ import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { time } from "console";
 import { GetBookings } from "../_actions/get-bookings";
+import { Dialog, DialogContent } from "@radix-ui/react-dialog";
+import SignInDialog from "./sign-in-dialog";
 
 
 interface ServiceItemProps {
@@ -66,7 +68,8 @@ const getTimeList = (bookings: Booking[]) => {
 
 
 const ServiceItem = ({service,barbershop}: ServiceItemProps) => {
-    const {data} = useSession()
+    const [SignInDialogIsOpen,setSignInDialogIsOpen] = useState(false)
+    const { data } = useSession()
     const [selectedDay,setSelectedDay] = useState<Date | undefined>(undefined)
     const [selectedTime, setSelectedTime] = useState<string | undefined>(undefined)
 
@@ -83,6 +86,13 @@ const ServiceItem = ({service,barbershop}: ServiceItemProps) => {
         }
         fetch()
     },[selectedDay,service.id])
+
+    const handleBookingClick = () => {
+        if (data?.user) {
+            return setbookingSheetIsOpen(true)
+        }
+        return setSignInDialogIsOpen(true)
+    }
     
     const handleBookingSheetOpenChange = () => {
         setSelectedDay(undefined)
@@ -122,6 +132,7 @@ const ServiceItem = ({service,barbershop}: ServiceItemProps) => {
 
     
     return (
+        <>
         <Card className="  rounded-xl">
             <CardContent className=" flex items-center gap-3 p-3 ">
                     {/* IMAGE */}
@@ -138,7 +149,7 @@ const ServiceItem = ({service,barbershop}: ServiceItemProps) => {
                             {Intl.NumberFormat("pt-BR",{ style: "currency",currency: "BRL",}).format(Number(service.price))}
                         </p>
                         <Sheet open={bookingSheetIsOpen} onOpenChange={handleBookingSheetOpenChange}>
-                                <Button variant="secondary" size="sm" className=" uppercase text-primary rounded-xl" onClick={() => setbookingSheetIsOpen(true)}>
+                                <Button variant="secondary" size="sm" className=" uppercase text-primary rounded-xl" onClick={handleBookingClick}>
                                 reservar
                                 </Button>
                             <SheetContent className="px-0 overflow-y-auto [&::-webkit-scrollbar]:hidden">
@@ -226,6 +237,12 @@ const ServiceItem = ({service,barbershop}: ServiceItemProps) => {
                     </div>
             </CardContent>
         </Card>
+        <Dialog open={SignInDialogIsOpen} onOpenChange={(open) => setSignInDialogIsOpen(open)}>
+            <DialogContent>
+                <SignInDialog/>
+            </DialogContent>
+        </Dialog>
+        </>
     )
 }
 
