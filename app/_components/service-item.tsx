@@ -72,6 +72,8 @@ const ServiceItem = ({service,barbershop}: ServiceItemProps) => {
 
 
     const [dayBookings, setDayBookings] = useState<Booking[]>([])
+    const [bookingSheetIsOpen,setbookingSheetIsOpen] = useState(false)
+
 
     useEffect(() => {
         const fetch = async () => {
@@ -82,6 +84,12 @@ const ServiceItem = ({service,barbershop}: ServiceItemProps) => {
         fetch()
     },[selectedDay,service.id])
     
+    const handleBookingSheetOpenChange = () => {
+        setSelectedDay(undefined)
+        setSelectedTime(undefined)
+        setDayBookings([])
+        setbookingSheetIsOpen(false)
+    }
     
     const handleDateSelect = (date: Date | undefined) => {
         setSelectedDay(date)
@@ -129,12 +137,10 @@ const ServiceItem = ({service,barbershop}: ServiceItemProps) => {
                         <p className=" text-sm font-bold text-primary">
                             {Intl.NumberFormat("pt-BR",{ style: "currency",currency: "BRL",}).format(Number(service.price))}
                         </p>
-                        <Sheet>
-                            <SheetTrigger asChild>
-                                <Button variant="secondary" size="sm" className=" uppercase text-primary rounded-xl">
+                        <Sheet open={bookingSheetIsOpen} onOpenChange={handleBookingSheetOpenChange}>
+                                <Button variant="secondary" size="sm" className=" uppercase text-primary rounded-xl" onClick={() => setbookingSheetIsOpen(true)}>
                                 reservar
                                 </Button>
-                            </SheetTrigger>
                             <SheetContent className="px-0 overflow-y-auto [&::-webkit-scrollbar]:hidden">
                                 <SheetHeader>
                                     <SheetTitle >Reservar</SheetTitle>
