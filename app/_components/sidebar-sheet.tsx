@@ -81,12 +81,14 @@ const handleLogoutClick = () => signOut()
                         </SheetClose>
                     ))}
                 </div>
-                <div className=" flex flex-col gap-1 py-3 border-b border-solid ">
+                {data?.user &&(
+                    <div className=" flex flex-col gap-1 py-3 border-b border-solid ">
                     <Button variant="ghost" className=" gap-1 justify-start" onClick={handleLogoutClick} >
                         <LogOutIcon size={18}/>
                         Sair da conta                        
                     </Button>
                 </div>
+                )}
             </SheetContent>
         </Sheet>
     );
