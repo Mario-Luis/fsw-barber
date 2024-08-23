@@ -9,6 +9,7 @@ import BookingItem from "./_components/booking-item";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./_lib/auth";
+import { useSession } from "next-auth/react";
 
 
 
@@ -20,10 +21,17 @@ const Home = async () => {
             name: "desc"
         }
     })
+    
 
     const bookings = session?.user? await db.booking.findMany({
+        orderBy: {
+            date: "asc",
+        },
         where: {
             userId: (session.user as any).id,
+            date: {
+                gte: new Date(),
+            }
         },
         include: {
             service: {
@@ -31,16 +39,18 @@ const Home = async () => {
                     barbershop: true
                 }
             }
-        }
+        },
+        
     })
     : []
+
     
     return (
         <div>
             <Header />
                 {/* TEXTO */}
             <div className="p-5" >
-                <h2 className=" text-4xl font-bold">Olá,Mario Luis!</h2>
+                <h2 className=" text-4xl font-bold">Olá,Mario Luis</h2>
                 <p className=" mb-4">Segunda-Feira 5 Agosto.</p>
                 
                 {/* BUSCA */}
@@ -63,7 +73,8 @@ const Home = async () => {
                 </div>
                 
                 {/* AGENDAMENTOS */}
-                <div className="flex overflow-x-auto [&::-webkit-scrollbar]:hidden">
+                <p className="mt-6 mb-3 font-bold uppercase text-xs text-gray-400 ">agendamentos</p>
+                <div className=" gap-3 flex overflow-x-auto [&::-webkit-scrollbar]:hidden">
                     {bookings.map((booking) => (
                         <BookingItem key={booking.id} booking={booking}/>
                     ))}
