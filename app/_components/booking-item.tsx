@@ -2,29 +2,36 @@ import { Badge } from "./ui/badge";
 import { Avatar } from "./ui/avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { Card, CardContent } from "./ui/card";
-import { Booking } from "@prisma/client"
+import { Prisma } from "@prisma/client"
 
 interface BookingItemProps {
-    booking: Booking
+    booking: Prisma.BookingGetPayload<{
+        include: {
+            service: {
+                include: {
+                    barbershop: true
+                }
+            }
+        }
+    }>
 }
 
 
-const BookingItem = () => {
+const BookingItem = ({booking}: BookingItemProps) => {
     return (
         <>
-        <p className=" mt-6 mb-3 font-bold uppercase text-xs text-gray-400 ">agendamentos</p>
-        <Card className=" rounded-xl" >
+        <Card className="  mt-5 rounded-xl" >
             <CardContent className="flex justify-between p-0 ">
                 {/* DIV DA ESQUERDA */}
                 <div className="flex flex-col pl-5 py-5 gap-2 ">
                     <Badge className="w-fit uppercase ">Confirmado</Badge>
-                    <h3 className="font-semibold ">Corte de Cabelo</h3>
+                    <h3 className="font-semibold ">{booking.service.name}</h3>
 
                     <div className="flex items-center gap-2 ">
                         <Avatar className="h-9 w-9 ">
-                            <AvatarImage src="https://utfs.io/f/c97a2dc9-cf62-468b-a851-bfd2bdde775f-16p.png" />
+                            <AvatarImage src={booking.service.barbershop.imageUrl} />
                         </Avatar>
-                        <p className="text-sm">Barbearia FSW</p>
+                        <p className="text-sm">{booking.service.barbershop.name}</p>
                     </div>
                 </div>
                 {/* DIV DA DIREITA */}

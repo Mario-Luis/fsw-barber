@@ -15,12 +15,19 @@ const Bookings = async () => {
         where: {
             userId: (session.user as any).id,
         },
+        include: {
+            service: {
+                include: {
+                    barbershop: true
+                }
+            }
+        }
     })
     return ( 
         <>
             <Header/>
-            <div className="ml-4">
-                <p className=" mt-6 mb-3 font-bold uppercase text-xs text-gray-400 ">agendamentos</p>
+            <div className="p-5">
+                <p className=" font-bold uppercase text-xs text-gray-400 ">agendamentos</p>
                 {bookings.map(booking => <BookingItem key={booking.id} booking={booking}/>)}
             </div>
         </>

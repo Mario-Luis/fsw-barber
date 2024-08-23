@@ -6,18 +6,34 @@ import { db } from "./_lib/prisma";
 import BarbershopItem from "./_components/barbershop-item";
 import quickSearchOptions from "./_constants/search";
 import BookingItem from "./_components/booking-item";
-import BarbershopsPage from "./barbershops/page";
 import Link from "next/link";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./_lib/auth";
 
 
 
 const Home = async () => {
+    const session = await getServerSession(authOptions)
     const barbershops = await db.barbershop.findMany({})
     const popularBarbershops = await db.barbershop.findMany({
         orderBy: {
             name: "desc"
         }
     })
+
+    const bookings = session?.user? await db.booking.findMany({
+        where: {
+            userId: (session.user as any).id,
+        },
+        include: {
+            service: {
+                include: {
+                    barbershop: true
+                }
+            }
+        }
+    })
+    : []
     
     return (
         <div>
@@ -47,7 +63,11 @@ const Home = async () => {
                 </div>
                 
                 {/* AGENDAMENTOS */}
-                <BookingItem />
+                <div className="flex overflow-x-auto [&::-webkit-scrollbar]:hidden">
+                    {bookings.map((booking) => (
+                        <BookingItem key={booking.id} booking={booking}/>
+                    ))}
+                </div>
 
                 <p className=" mt-6 mb-3 font-bold uppercase text-xs text-gray-400 ">recomendados</p>
                 {/* SCROLL DE RECOMENDADOS */}
