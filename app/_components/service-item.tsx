@@ -8,7 +8,6 @@ import { SheetTrigger,Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter,
 import { Calendar } from "./ui/calendar";
 import { ptBR } from "date-fns/locale";
 import { useEffect, useState } from "react";
-import { addDays, format, set, setHours, setMinutes } from "date-fns";
 import { Pick } from "@prisma/client/runtime/library";
 import { createBooking } from "../_actions/create-booking";
 import { useSession } from "next-auth/react";
@@ -17,6 +16,7 @@ import { time } from "console";
 import { GetBookings } from "../_actions/get-bookings";
 import { Dialog, DialogContent } from "@radix-ui/react-dialog";
 import SignInDialog from "./sign-in-dialog";
+import { addDays, format, set } from "date-fns";
 
 
 interface ServiceItemProps {
