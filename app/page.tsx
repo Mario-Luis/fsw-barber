@@ -71,12 +71,9 @@ const Home = async () => {
                 <div className="relative h-[150px] w-full mt-6">
                     <Image alt="baner,agende nos melhores com fsw-barber" src="/banner-01.png" fill className="object-cover rounded-xl" />
                 </div>
-                
-                {/* AGENDAMENTOS */}
                 <p className="mt-6 mb-3 font-bold uppercase text-xs text-gray-400 ">agendamentos</p>
-                
-                
-                <div className="w-[90%] gap-3 flex overflow-x-auto [&::-webkit-scrollbar]:hidden">
+                {/* AGENDAMENTOS */}
+                <div className=" overflow-y-auto gap-3 flex [&::-webkit-scrollbar]:hidden">
                     {bookings.map((booking) => (<BookingItem key={booking.id} booking={booking}/>))}
                 </div>
 

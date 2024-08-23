@@ -37,8 +37,8 @@ const BookingItem = ({booking}: BookingItemProps) => {
 
     return (
         <Sheet>
-            <SheetTrigger className=" w-full">
-                <Card className=" rounded-xl" >
+            <SheetTrigger>
+                <Card className="w-[315px] h-[150px] rounded-xl" >
                     <CardContent className="flex justify-between p-0 ">
                         {/* DIV DA ESQUERDA */}
                         <div className="flex flex-col pl-5 py-5 gap-2 ">
