@@ -8,6 +8,11 @@ import { ptBR } from "date-fns/locale";
 import { SheetTrigger,Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter, SheetClose } from "./ui/sheet";
 import Image from "next/image";
 import { Button } from "./ui/button";
+import PhoneItem from "./phone-item";
+import { ReactNode } from "react";
+import Link from "next/link";
+import { DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "./ui/dialog";
+import { Dialog, DialogClose, DialogFooter, DialogHeader } from "./ui/dialog";
 
 
 interface BookingItemProps {
@@ -26,10 +31,14 @@ interface BookingItemProps {
 const BookingItem = ({booking}: BookingItemProps) => {
     const {service: {barbershop}} = booking
     const isConfirmed = isFuture(booking.date)
+    function phone(value: string, index: number, array: string[]): ReactNode {
+        throw new Error("Function not implemented.");
+    }
+
     return (
         <Sheet>
             <SheetTrigger className=" w-full">
-                <Card className=" min-w-[90%] rounded-xl" >
+                <Card className=" rounded-xl" >
                     <CardContent className="flex justify-between p-0 ">
                         {/* DIV DA ESQUERDA */}
                         <div className="flex flex-col pl-5 py-5 gap-2 ">
@@ -54,9 +63,9 @@ const BookingItem = ({booking}: BookingItemProps) => {
                     </CardContent>
                 </Card>
             </SheetTrigger>
-            <SheetContent className="w-[90%]">
+            <SheetContent className=" overflow-y-auto [&::-webkit-scrollbar]:hidden w-[90%]">
                 <SheetHeader>
-                    <SheetTitle className=" text-left">Informações da reserva</SheetTitle>
+                    <SheetTitle className="  text-left">Informações da reserva</SheetTitle>
                 </SheetHeader>
                 <div className="mt-5 flex items-end relative h-[150px] w-full ">
                     <Image alt="mapa.imagem" src="/road.jpg.webp" fill className=" rounded-xl object-cover" />
@@ -76,7 +85,7 @@ const BookingItem = ({booking}: BookingItemProps) => {
                     <Badge variant={isConfirmed ? "default" : "secondary"} className="w-fit uppercase ">
                         {isConfirmed? "Confirmado" : "Finalizado"}
                     </Badge>
-                    <Card className="mt-5 rounded-xl">
+                    <Card className="mt-3 mb-5 rounded-xl">
                         <CardContent className="p-3 space-y-3">
                             <div className=" flex justify-between items-center">
                                 <h2 className=" font-bold">{booking.service.name}</h2>
@@ -104,10 +113,41 @@ const BookingItem = ({booking}: BookingItemProps) => {
                             </div>
                         </CardContent>
                     </Card>
+                    <div className=" space-y-3">
+                    {barbershop.phones.map((phone, index) => (<PhoneItem key={index} phone={phone}/>))}
+                    </div>
                 </div>
+                <SheetFooter className="mt-6">
+                    <div className=" flex items-center gap-3">
+                        <SheetClose asChild >
+                            <Button className=" w-full" variant="outline">Voltar</Button>
+                        </SheetClose>
+                        {isConfirmed && (
+                            <Dialog >
+                                <DialogTrigger asChild>
+                                    <Button className=" w-full font-bold"  variant="destructive">Cancelar</Button>
+                                </DialogTrigger>
+                                <DialogContent className=" w-[90%]">
+                                    <DialogHeader>
+                                        <DialogTitle className=" text-xl">Deseja realmente cancelar?</DialogTitle>
+                                        <DialogDescription>
+                                            Ao cancelar você apagará sua reserva,esta ação é irreversivel.
+                                        </DialogDescription>
+                                    </DialogHeader>
+                                    <DialogFooter className=" gap-2 flex flex-row">
+                                        <DialogClose asChild>
+                                            <Button className=" w-full" variant="secondary" >Voltar</Button>
+                                        </DialogClose>
+                                        <Button className=" w-full" variant="destructive">Cancelar</Button>
+                                    </DialogFooter>
+                                </DialogContent>
+                            </Dialog>
+                        )}
+                    </div>
+                </SheetFooter>
             </SheetContent>
         </Sheet>
-    );
+    )
 }
 
 export default BookingItem
