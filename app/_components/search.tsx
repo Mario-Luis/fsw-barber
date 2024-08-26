@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 
 const formSchema = z.object({
     Search: z.string(). trim().min(1,{
-        message:"Opçāo invalida,animal incompetente!",
+        message:"Opçāo invalida!",
     }),
 })
 
