@@ -31,7 +31,7 @@ const handleSubmit = (data: z.infer<typeof formSchema>) => {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSubmit)} className=" mt-6 flex gap-2">
+            <form onSubmit={form.handleSubmit(handleSubmit)} className=" mt-3 flex gap-2">
                 <FormField control={form.control} name="Search" render={({ field }) => (
                     <FormItem className=" w-full ">
                         <FormControl>

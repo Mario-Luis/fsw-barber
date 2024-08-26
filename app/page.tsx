@@ -9,7 +9,8 @@ import BookingItem from "./_components/booking-item";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./_lib/auth";
-import { useSession } from "next-auth/react";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 
 
@@ -44,14 +45,19 @@ const Home = async () => {
     })
     : []
 
+
     
     return (
         <div>
             <Header />
                 {/* TEXTO */}
-            <div className="p-5" >
-                <h2 className=" text-4xl font-bold">Olá,Mario Luis</h2>
-                <p className=" mb-4">Segunda-Feira 5 Agosto.</p>
+            <div className="p-5">
+                <h2 className=" text-4xl font-bold">Olá,{session?.user ? session.user.name : "bem vindo"}!</h2>
+                <div className="mb-6 gap-1 flex">
+                    <p className=" capitalize">{format(new Date(),"EEEE,dd", {locale: ptBR,})}</p>
+                    <p> de </p>
+                    <p className=" capitalize">{format(new Date()," MMMM", {locale: ptBR,})}</p>
+                </div>
                 
                 {/* BUSCA */}
                 <div className=" p-0"><Search/></div>
@@ -71,11 +77,15 @@ const Home = async () => {
                 <div className="relative h-[150px] w-full mt-6">
                     <Image alt="baner,agende nos melhores com fsw-barber" src="/banner-01.png" fill className="object-cover rounded-xl" />
                 </div>
-                <p className="mt-6 mb-3 font-bold uppercase text-xs text-gray-400 ">agendamentos</p>
                 {/* AGENDAMENTOS */}
-                <div className=" overflow-y-auto gap-3 flex [&::-webkit-scrollbar]:hidden">
-                    {bookings.map((booking) => (<BookingItem key={booking.id} booking={booking}/>))}
-                </div>
+                {bookings.length > 0 && (
+                    <>
+                        <p className="mt-6 mb-3 font-bold uppercase text-xs text-gray-400 ">agendamentos</p>
+                        <div className=" overflow-y-auto gap-3 flex [&::-webkit-scrollbar]:hidden">
+                            {bookings.map((booking) => (<BookingItem key={booking.id} booking={booking}/>))}
+                        </div>
+                    </>
+                )}
 
                 <p className=" mt-6 mb-3 font-bold uppercase text-xs text-gray-400 ">recomendados</p>
                 {/* SCROLL DE RECOMENDADOS */}

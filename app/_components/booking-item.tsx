@@ -1,3 +1,5 @@
+"use client"
+
 import { Badge } from "./ui/badge";
 import { Avatar } from "./ui/avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
@@ -9,10 +11,12 @@ import { SheetTrigger,Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter,
 import Image from "next/image";
 import { Button } from "./ui/button";
 import PhoneItem from "./phone-item";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import Link from "next/link";
 import { DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { Dialog, DialogClose, DialogFooter, DialogHeader } from "./ui/dialog";
+import { deleteBooking } from "../_actions/delete-booking";
+import { toast } from "sonner";
 
 
 interface BookingItemProps {
@@ -29,14 +33,26 @@ interface BookingItemProps {
 
 
 const BookingItem = ({booking}: BookingItemProps) => {
+    const [isSheetOpen,setIsSheetOpen] = useState(false)
+    const handleSheetOpenChange = (isOpen: boolean) => {setIsSheetOpen(isOpen)}
     const {service: {barbershop}} = booking
     const isConfirmed = isFuture(booking.date)
     function phone(value: string, index: number, array: string[]): ReactNode {
         throw new Error("Function not implemented.");
     }
+    const handleCancelBooking = async () => {
+        try {
+            await deleteBooking(booking.id)
+            setIsSheetOpen(false)
+            toast.success("Reserva cancelada com sucesso!")
+        }catch (error) {
+            console.error(error)
+            toast.error("Erro ao cancelar reserva,tente novamente.")
+        }
+    }
 
     return (
-        <Sheet>
+        <Sheet open={isSheetOpen} onOpenChange={handleSheetOpenChange}>
             <SheetTrigger>
                 <Card className="w-[315px] h-[150px] rounded-xl" >
                     <CardContent className="flex justify-between p-0 ">
@@ -138,7 +154,7 @@ const BookingItem = ({booking}: BookingItemProps) => {
                                         <DialogClose asChild>
                                             <Button className=" w-full" variant="secondary" >Voltar</Button>
                                         </DialogClose>
-                                        <Button className=" w-full" variant="destructive">Cancelar</Button>
+                                        <Button onClick={handleCancelBooking} className=" w-full" variant="destructive">Cancelar</Button>
                                     </DialogFooter>
                                 </DialogContent>
                             </Dialog>
