@@ -52,7 +52,7 @@ const Home = async () => {
             <Header />
                 {/* TEXTO */}
             <div className="p-5">
-                <h2 className=" text-4xl font-bold">Olá,{session?.user ? session.user.name : "bem vindo"}!</h2>
+                <h2 className=" text-4xl font-bold">Olá,{session?.user ? session.user.name : "bem-vindo"}!</h2>
                 <div className="mb-6 gap-1 flex">
                     <p className=" capitalize">{format(new Date(),"EEEE,dd", {locale: ptBR,})}</p>
                     <p> de </p>
