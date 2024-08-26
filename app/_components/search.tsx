@@ -3,7 +3,6 @@
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { SearchIcon } from "lucide-react";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"

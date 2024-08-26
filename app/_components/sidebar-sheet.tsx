@@ -7,9 +7,8 @@ import quickSearchOptions from "../_constants/search";
 import Image from "next/image";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import Link from "next/link";
-import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "./ui/dialog";
-import { DialogHeader } from "./ui/dialog";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { Dialog, DialogTrigger } from "./ui/dialog";
+import { signOut, useSession } from "next-auth/react";
 import SignInDialog from "./sign-in-dialog";
 
 

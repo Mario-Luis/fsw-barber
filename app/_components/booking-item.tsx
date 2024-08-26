@@ -12,7 +12,6 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import PhoneItem from "./phone-item";
 import { ReactNode, useState } from "react";
-import Link from "next/link";
 import { DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { Dialog, DialogClose, DialogFooter, DialogHeader } from "./ui/dialog";
 import { deleteBooking } from "../_actions/delete-booking";

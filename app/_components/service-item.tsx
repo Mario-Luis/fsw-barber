@@ -4,7 +4,7 @@ import { BarbershopService ,Barbershop, Booking } from "@prisma/client";
 import { CardContent , Card } from "./ui/card";
 import Image from "next/image";
 import { Button } from "./ui/button";
-import { SheetTrigger,Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter, SheetClose } from "./ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter, SheetClose } from "./ui/sheet";
 import { Calendar } from "./ui/calendar";
 import { ptBR } from "date-fns/locale";
 import { useEffect, useMemo, useState } from "react";
@@ -12,11 +12,10 @@ import { Pick } from "@prisma/client/runtime/library";
 import { createBooking } from "../_actions/create-booking";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-import { time } from "console";
 import { GetBookings } from "../_actions/get-bookings";
 import { Dialog, DialogContent } from "@radix-ui/react-dialog";
 import SignInDialog from "./sign-in-dialog";
-import { addDays, Day, format, isPast, isToday, set } from "date-fns";
+import { addDays,format, isPast, isToday, set } from "date-fns";
 
 
 interface ServiceItemProps {
